@@ -1,11 +1,16 @@
 PID=$1
 DIR=`pwd`
 git submodule init
+git submodule update
 cd perf-map-agent
 cmake .
 make
-./bin/create-links-in ../
-cd /user/lib/jvm/perf-map-agent/out
+if [ ! -f ../perf-java-top ] 
+then
+  ./bin/create-links-in ../
+fi
+
+cd out
 java -cp attach-main.jar:$JAVA_HOME/lib/tools.jar net.virtualvoid.perf.AttachOnce $PID
 cd $DIR
 perf record -F 99 -p $PID -g -- sleep 30; ./Misc/java/jmaps
