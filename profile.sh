@@ -2,6 +2,7 @@ PID=$1
 DIR=`pwd`
 git submodule init
 git submodule update
+export AGENT_HOME=`pwd`\/perf-map-agent
 cd perf-map-agent
 cmake .
 make
